@@ -1,0 +1,188 @@
+Building configuration...
+
+Current configuration : 4537 bytes
+!
+! Last configuration change at 15:46:49 UTC Tue Apr 14 2026
+!
+version 15.9
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+!
+hostname R1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+no logging console
+!
+no aaa new-model
+!
+!
+!
+mmi polling-interval 60
+no mmi auto-configure
+no mmi pvc
+mmi snmp-timeout 180
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+redundancy
+!
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 192.168.1.1 255.255.255.224
+ ipv6 address FE80::1:4 link-local
+ ipv6 address 2001:DB8:ACAD:1000::1/64
+!
+interface Loopback1
+ ip address 192.168.1.65 255.255.255.192
+ ipv6 address FE80::1:5 link-local
+ ipv6 address 2001:DB8:ACAD:1001::1/64
+!
+interface GigabitEthernet0/0
+ ip address 10.1.2.1 255.255.255.0
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address FE80::1:1 link-local
+ ipv6 address 2001:DB8:ACAD:1012::1/64
+!
+interface GigabitEthernet0/1
+ ip address 10.1.3.129 255.255.255.128
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address FE80::1:3 link-local
+ ipv6 address 2001:DB8:ACAD:1014::1/64
+!
+interface GigabitEthernet0/2
+ ip address 10.1.3.1 255.255.255.128
+ duplex auto
+ speed auto
+ media-type rj45
+ ipv6 address FE80::1:2 link-local
+ ipv6 address 2001:DB8:ACAD:1013::1/64
+!
+interface GigabitEthernet0/3
+ no ip address
+ shutdown
+ duplex auto
+ speed auto
+ media-type rj45
+!
+router bgp 1000
+ bgp router-id 1.1.1.1
+ bgp log-neighbor-changes
+ neighbor 10.1.2.2 remote-as 500
+ neighbor 10.1.3.3 remote-as 300
+ neighbor 10.1.3.130 remote-as 300
+ neighbor 2001:DB8:ACAD:1012::2 remote-as 500
+ neighbor 2001:DB8:ACAD:1013::3 remote-as 300
+ neighbor 2001:DB8:ACAD:1014::3 remote-as 300
+ !
+ address-family ipv4
+  network 192.168.1.0 mask 255.255.255.224
+  network 192.168.1.64 mask 255.255.255.192
+  redistribute static
+  neighbor 10.1.2.2 activate
+  neighbor 10.1.3.3 activate
+  neighbor 10.1.3.130 activate
+  no neighbor 2001:DB8:ACAD:1012::2 activate
+  no neighbor 2001:DB8:ACAD:1013::3 activate
+  no neighbor 2001:DB8:ACAD:1014::3 activate
+ exit-address-family
+ !
+ address-family ipv6
+  network 2001:DB8:ACAD:1000::/64
+  network 2001:DB8:ACAD:1001::/64
+  aggregate-address 2001:DB8:ACAD:1000::/52 as-set summary-only
+  neighbor 2001:DB8:ACAD:1012::2 activate
+  neighbor 2001:DB8:ACAD:1013::3 activate
+  neighbor 2001:DB8:ACAD:1014::3 activate
+ exit-address-family
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+ipv6 ioam timestamp
+!
+!
+!
+control-plane
+!
+banner exec ^C
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+banner incoming ^C
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+banner login ^C
+**************************************************************************
+* IOSv is strictly limited to use for evaluation, demonstration and IOS  *
+* education. IOSv is provided as-is and is not supported by Cisco's      *
+* Technical Advisory Center. Any use or disclosure, in whole or in part, *
+* of the IOSv Software or Documentation to any third party for any       *
+* purposes is expressly prohibited except as otherwise authorized by     *
+* Cisco in writing.                                                      *
+**************************************************************************^C
+!
+line con 0
+ exec-timeout 0 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ exec-timeout 0 0
+ login
+ transport input none
+!
+no scheduler allocate
+!
+end
