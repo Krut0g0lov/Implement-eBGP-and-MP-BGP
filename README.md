@@ -3,7 +3,7 @@
 > 🚀 Combined Cisco NetAcad Lab — eBGP + MP-BGP (IPv4 & IPv6)
 ![screenshot](output.png)
 
-![screenshot](output_2.png)
+![screenshot](output_3.png)
 
 This project demonstrates the implementation of **eBGP and Multiprotocol BGP (MP-BGP)** in a multi-AS environment, simulating a real-world **service provider ↔ customer topology**.
 
